@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Superhero Task Matrix</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@300;400;600;700&family=Cinzel:wght@700&family=Russo+One&display=swap" rel="stylesheet">
+</head>
+<body class="theme-captainamerica">
+
+    <!-- THE SUPERHERO CANVAS ANIMATION ENGINE -->
+    <canvas id="dynamic-canvas-bg"></canvas>
+
+    <!-- SYSTEM NAVIGATION CONTROL LAYER -->
+    <nav class="nav-bar">
+        <button class="nav-btn active" data-target="home-view">
+            <span class="nav-icon">📊</span> <span class="nav-text">Dashboard</span>
+        </button>
+        <button class="nav-btn" data-target="list-view">
+            <span class="nav-icon">⚡</span> <span class="nav-text">Workspace</span>
+        </button>
+        <button class="nav-btn" data-target="theme-view">
+            <span class="nav-icon">🎨</span> <span class="nav-text">Heroes</span>
+        </button>
+    </nav>
+
+    <!-- SILHOUETTE SHAPE-SHIFTING MAIN CONSOLE -->
+    <div class="todo-grand-wrapper dynamic-hero-shape">
+        
+        <!-- VIEWPORT MODULE 1: ANALYTICS DASHBOARD -->
+        <div id="home-view" class="page-view active">
+            <div class="welcome-header">
+                <h2 id="dynamic-headline">Mission Control</h2>
+                <p class="subtitle" id="dynamic-subheadline">Track outstanding alerts and objectives</p>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card total-card">
+                    <span id="stat-total" class="counter-num">0</span>
+                    <label>Total Missions</label>
+                </div>
+                <div class="stat-card pending-card">
+                    <span id="stat-pending" class="counter-num">0</span>
+                    <label>Active Threats</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIEWPORT MODULE 2: WORKSPACE TASK INTERFACE -->
+        <div id="list-view" class="page-view">
+            <div class="welcome-header">
+                <h2>Mission Briefing</h2>
+                <p class="subtitle">Deploy your tactical targets immediately</p>
+            </div>
+            <div class="input-container">
+                <input type="text" id="task-input" placeholder="Enter objective details...">
+                <button id="add-btn">Deploy</button>
+            </div>
+            <ul id="task-list" class="grand-list-container"></ul>
+        </div>
+
+        <!-- VIEWPORT MODULE 3: THEME CONTROL MATRIX -->
+        <div id="theme-view" class="page-view">
+            <div class="welcome-header">
+                <h2>Select Hero Suite</h2>
+                <p class="subtitle">Switch canvas telemetry profiles</p>
+            </div>
+            <div class="theme-options">
+                <button class="theme-btn active-theme btn-captainamerica" data-theme="captainamerica">
+                    <div class="theme-preview captainamerica-p"></div>
+                    <span>🛡️ Captain America</span>
+                </button>
+                <button class="theme-btn btn-thor" data-theme="thor">
+                    <div class="theme-preview thor-p"></div>
+                    <span>⚡ Thor Mode</span>
+                </button>
+                <button class="theme-btn btn-ironman" data-theme="ironman">
+                    <div class="theme-preview ironman-p"></div>
+                    <span>🚀 Iron Man Mode</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
