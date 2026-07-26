@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aura - Premium To-Do List</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Styles -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="dark-theme">
+    
+    <!-- Background Animation Elements -->
+    <div class="bg-animation">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+        <div class="particles" id="particles"></div>
+    </div>
+
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loader">
+            <div class="glow-ring"></div>
+            <h1>Aura</h1>
+        </div>
+    </div>
+
+    <!-- Notification Toast Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Main App Container -->
+    <div class="app-container" id="app-container" style="display: none;">
+        
+        <!-- Sidebar -->
+        <aside class="sidebar glass-panel">
+            <div class="logo">
+                <i class="fa-solid fa-layer-group logo-icon"></i>
+                <h2>Aura</h2>
+            </div>
+            
+            <nav class="menu">
+                <div class="menu-section">
+                    <h3>Filters</h3>
+                    <ul id="filter-menu">
+                        <li class="active" data-filter="all"><i class="fa-solid fa-list"></i> All Tasks</li>
+                        <li data-filter="today"><i class="fa-solid fa-calendar-day"></i> Today</li>
+                        <li data-filter="upcoming"><i class="fa-solid fa-calendar-alt"></i> Upcoming</li>
+                        <li data-filter="completed"><i class="fa-solid fa-check-circle"></i> Completed</li>
+                        <li data-filter="pending"><i class="fa-solid fa-hourglass-half"></i> Pending</li>
+                        <li data-filter="overdue"><i class="fa-solid fa-exclamation-circle"></i> Overdue</li>
+                    </ul>
+                </div>
+                
+                <div class="menu-section">
+                    <div class="section-header">
+                        <h3>Categories</h3>
+                        <button id="add-category-btn" class="icon-btn"><i class="fa-solid fa-plus"></i></button>
+                    </div>
+                    <ul id="category-menu">
+                        <!-- Categories injected here -->
+                    </ul>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            
+            <!-- Header -->
+            <header class="header">
+                <div class="header-left">
+                    <button id="mobile-menu-btn" class="icon-btn mobile-only"><i class="fa-solid fa-bars"></i></button>
+                    <div class="greeting-container">
+                        <h1 id="greeting-text">Good Morning</h1>
+                        <p id="current-date" class="date-text">Monday, Jan 1</p>
+                    </div>
+                </div>
+                
+                <div class="header-center">
+                    <div class="search-bar glass-input">
+                        <i class="fa-solid fa-search"></i>
+                        <input type="text" id="search-input" placeholder="Search tasks...">
+                    </div>
+                </div>
+
+                <div class="header-right">
+                    <div class="live-clock" id="live-clock">12:00 PM</div>
+                </div>
+            </header>
+
+            <!-- Hero Stats -->
+            <section class="hero-stats">
+                <div class="stat-card glass-panel">
+                    <div class="stat-icon pending-icon"><i class="fa-solid fa-hourglass-half"></i></div>
+                    <div class="stat-details">
+                        <h4>Pending</h4>
+                        <span id="stat-pending">0</span>
+                    </div>
+                </div>
+                <div class="stat-card glass-panel">
+                    <div class="stat-icon completed-icon"><i class="fa-solid fa-check"></i></div>
+                    <div class="stat-details">
+                        <h4>Completed</h4>
+                        <span id="stat-completed">0</span>
+                    </div>
+                </div>
+                <div class="stat-card glass-panel">
+                    <div class="stat-icon total-icon"><i class="fa-solid fa-list-check"></i></div>
+                    <div class="stat-details">
+                        <h4>Total Tasks</h4>
+                        <span id="stat-total">0</span>
+                    </div>
+                </div>
+                <div class="stat-card glass-panel progress-card">
+                    <div class="progress-circle">
+                        <svg>
+                            <circle cx="25" cy="25" r="20"></circle>
+                            <circle cx="25" cy="25" r="20" id="progress-circle-value"></circle>
+                        </svg>
+                        <span id="progress-text">0%</span>
+                    </div>
+                    <div class="stat-details">
+                        <h4>Productivity</h4>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Task Input Area -->
+            <section class="task-input-section glass-panel">
+                <form id="add-task-form">
+                    <div class="input-main">
+                        <div class="checkbox-placeholder"></div>
+                        <input type="text" id="new-task-input" placeholder="What needs to be done? (Press Enter)" autocomplete="off">
+                        <button type="submit" class="primary-btn"><i class="fa-solid fa-plus"></i> Add</button>
+                    </div>
+                    <div class="input-options">
+                        <div class="option-group">
+                            <i class="fa-solid fa-calendar"></i>
+                            <input type="date" id="new-task-date">
+                        </div>
+                        <div class="option-group">
+                            <i class="fa-solid fa-flag"></i>
+                            <select id="new-task-priority">
+                                <option value="low">Low Priority</option>
+                                <option value="medium" selected>Medium Priority</option>
+                                <option value="high">High Priority</option>
+                            </select>
+                        </div>
+                        <div class="option-group">
+                            <i class="fa-solid fa-tag"></i>
+                            <select id="new-task-category">
+                                <!-- Populated dynamically -->
+                            </select>
+                        </div>
+                        <div class="option-group expand-btn-group">
+                            <button type="button" id="toggle-notes-btn" class="text-btn">Add Notes</button>
+                        </div>
+                    </div>
+                    <div class="notes-container" id="notes-container" style="display: none;">
+                        <textarea id="new-task-notes" placeholder="Add additional details or notes here..."></textarea>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Task List Area -->
+            <section class="task-list-section">
+                <div class="list-header">
+                    <h2 id="list-title">All Tasks</h2>
+                    <div class="sort-dropdown">
+                        <button class="icon-btn"><i class="fa-solid fa-sort"></i></button>
+                    </div>
+                </div>
+                
+                <div class="tasks-container" id="tasks-container">
+                    <!-- Tasks will be injected here -->
+                    <div class="empty-state" id="empty-state">
+                        <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2300FF9D' width='64' height='64'><path d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm4.59-12.42L10 14.17l-2.59-2.58L6 13l4 4 8-8z'/></svg>" alt="Empty">
+                        <h3>No tasks found</h3>
+                        <p>Enjoy your free time or add a new task!</p>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Right Panel - Productivity -->
+        <aside class="right-panel glass-panel">
+            
+            <!-- Pomodoro Timer -->
+            <div class="pomodoro-widget glass-card">
+                <h3><i class="fa-solid fa-stopwatch"></i> Focus Timer</h3>
+                <div class="timer-display" id="timer-display">25:00</div>
+                <div class="timer-mode">
+                    <button class="mode-btn active" data-mode="pomodoro">Focus</button>
+                    <button class="mode-btn" data-mode="shortBreak">Short Break</button>
+                    <button class="mode-btn" data-mode="longBreak">Long Break</button>
+                </div>
+                <div class="timer-controls">
+                    <button id="timer-start" class="timer-btn play"><i class="fa-solid fa-play"></i></button>
+                    <button id="timer-pause" class="timer-btn pause" style="display: none;"><i class="fa-solid fa-pause"></i></button>
+                    <button id="timer-reset" class="timer-btn reset"><i class="fa-solid fa-rotate-right"></i></button>
+                </div>
+            </div>
+
+            <!-- Quote Widget -->
+            <div class="quote-widget glass-card">
+                <i class="fa-solid fa-quote-left quote-icon"></i>
+                <p id="daily-quote" class="quote-text">"Success is not final, failure is not fatal: it is the courage to continue that counts."</p>
+                <span id="quote-author" class="quote-author">- Winston Churchill</span>
+            </div>
+
+            <!-- Achievements -->
+            <div class="achievements-widget glass-card">
+                <h3><i class="fa-solid fa-award"></i> Achievements</h3>
+                <div class="streak-container">
+                    <div class="streak-icon"><i class="fa-solid fa-fire"></i></div>
+                    <div class="streak-info">
+                        <h4>Daily Streak</h4>
+                        <p><span id="streak-count">0</span> Days</p>
+                    </div>
+                </div>
+                <div class="badges-container" id="badges-container">
+                    <!-- Badges injected here -->
+                </div>
+            </div>
+            
+        </aside>
+    </div>
+
+    <!-- Modals -->
+    
+    <!-- Edit Task Modal -->
+    <div id="edit-modal" class="modal-overlay">
+        <div class="modal-content glass-panel">
+            <div class="modal-header">
+                <h2>Edit Task</h2>
+                <button class="close-modal icon-btn"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="edit-task-id">
+                <div class="form-group">
+                    <label>Task Title</label>
+                    <input type="text" id="edit-task-title" class="glass-input">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Date</label>
+                        <input type="date" id="edit-task-date" class="glass-input">
+                    </div>
+                    <div class="form-group">
+                        <label>Priority</label>
+                        <select id="edit-task-priority" class="glass-input">
+                            <option value="low">Low</option>
+                            <option value="medium">Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <select id="edit-task-category" class="glass-input">
+                        <!-- Populated dynamically -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Notes</label>
+                    <textarea id="edit-task-notes" class="glass-input" rows="3"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="secondary-btn close-modal">Cancel</button>
+                <button id="save-edit-btn" class="primary-btn">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="delete-modal" class="modal-overlay">
+        <div class="modal-content glass-panel modal-sm">
+            <div class="modal-header">
+                <h2>Delete Task</h2>
+                <button class="close-modal icon-btn"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this task? This action cannot be undone.</p>
+                <input type="hidden" id="delete-task-id">
+            </div>
+            <div class="modal-footer">
+                <button class="secondary-btn close-modal">Cancel</button>
+                <button id="confirm-delete-btn" class="danger-btn">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Category Modal -->
+    <div id="category-modal" class="modal-overlay">
+        <div class="modal-content glass-panel modal-sm">
+            <div class="modal-header">
+                <h2>Add Category</h2>
+                <button class="close-modal icon-btn"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Category Name</label>
+                    <input type="text" id="new-category-name" class="glass-input" placeholder="e.g. Design">
+                </div>
+                <div class="form-group">
+                    <label>Color</label>
+                    <input type="color" id="new-category-color" value="#00FF9D" class="color-picker">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="secondary-btn close-modal">Cancel</button>
+                <button id="save-category-btn" class="primary-btn">Add Category</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confetti Canvas -->
+    <canvas id="confetti-canvas"></canvas>
+
+    <script src="script.js"></script>
+</body>
+</html>
